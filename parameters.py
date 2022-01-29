@@ -14,3 +14,7 @@ dict_provider_name = {
     "LiveRampPelFile": "LiveRamp",
     "TowerData": "TowerData",
 }
+
+
+export_folder = "outputs/"
+save_graphs = False

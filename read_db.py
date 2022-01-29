@@ -65,12 +65,12 @@ def fetch_data():
     LEFT JOIN license_info pd
     on ii.identifier = pd.identifier
     """
-    df_input = pd.read_sql_query(
-        sql, conn_sql
-    )  # Check if we need another type of Join!
+    df = pd.read_sql_query(sql, conn_sql)  # Check if we need another type of Join!
 
-    df_input = df_input.replace({"license": dict_provider_name})
-
+    df = df.replace({"license": dict_provider_name})
+    print("df", len(df))
+    df_out = df.groupby(["license", "identifier"], as_index=False).sum()
+    print("df_out", len(df_out))
     # Close the connection to the DB
     conn_sql.close()
-    return df_input, identifier_info
+    return df_out, identifier_info
