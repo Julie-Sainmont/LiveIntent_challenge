@@ -17,4 +17,4 @@ dict_provider_name = {
 
 
 export_folder = "outputs/"
-save_graphs = False
+save_graphs = True

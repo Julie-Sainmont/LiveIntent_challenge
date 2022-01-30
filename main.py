@@ -9,7 +9,7 @@ provide services for other partners. An identifier can only be used in those
 services if a license is obtained. Currently LiveIntent has an agreement with
 one such provider (LiveRamp) and is considering whether it should replace that
 partner with one of two other partners, Audience Accuity and TowerData, or maybe
-rely on two or three of them. 
+rely on two or three of them.
 
 Request:
 -------
@@ -20,116 +20,113 @@ the more opens, clicks and conversions that are available for the services the
 better the service will perform. Feel free to use all the tools you are comfortable with.
 Solution would include both visualisations and the code used to produce them
 
+Notes:
+Use Venn diagram to look at overlap:
+    # https://towardsdatascience.com/visualizing-intersections-and-overlaps-with-python-a6af49c597d9
 
 @author: julie
 """
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
+# import pandas as pd
 
-from venn import venn
-from matplotlib_venn import venn3, venn3_circles
-from matplotlib_venn import venn2, venn2_circles
 from read_db import fetch_data
 from visuals import (
-    built_venn_sets,
-    plot_identifiers_per_license,
+    barplot_per_license,
     plot_n_licences_per_identifier,
     plot_overlapping_sets,
     plot_venn_matrix,
     plot_cross_matrix,
     plot_venn3,
+    hist_activity_per_licence,
+)
+from supportive_functions import (
+    # percent_coverage_identifiers,
+    # print_coverage_identifiers,
+    get_volume_license,
+    get_coverage_per_license,
+    build_overlapping_set_matrix,
+    build_coverage_sumary,
 )
 
-# Get the data from the database
-df_input, identifier_info = fetch_data()
 
+# ---- Get the data from the database
+# ----------------------------------
+df_input = fetch_data(print_db_header=False)
 # list of licenses
 list_licenses = list(df_input.license.dropna().unique())
 n_license = len(list_licenses)
+activity_list = ["opens", "clicks", "conversions"]
 
-
-# - bar plot of the number of identifiers per license
-plot_identifiers_per_license(df_input)
-
-
-# ---- How many license each identifier can be optained from
-df_id_count_license = (
-    df_input[~pd.isnull(df_input["license"])]
-    .groupby("identifier")
-    .agg(**{"license_count": ("license", "count"), "license": ("license", ", ".join)})
-    .reset_index()
-)
-
+# ---- Number of licenses covering each license:
+# -----------------------------------------------
+(_, df_dist_coverage) = get_coverage_per_license(df_input)
 # Distribution (bar plot) of the number of licences covering each identifier
-plot_n_licences_per_identifier(df_id_count_license)
+plot_n_licences_per_identifier(df_dist_coverage)
 
 
-# # --- idea:
-
-#! look at the otherlap of licences!
-# "a license for a given identifier can potentially be obtained from multiple partners #
-# use venn diagram # https://towardsdatascience.com/visualizing-intersections-and-overlaps-with-python-a6af49c597d9
-
-# look at the ratio of conversions/opens or clicks?
-# Look at the distribution of identifier's opens, clicks, conversion for each license
-
-# ---------------------------------- #
-# --- Overlap of the licenses  ----- #
-# ---------------------------------- #
-df = (
-    df_input[
-        np.logical_and(
-            ~pd.isnull(df_input["license"]),
-            df_input[["opens", "clicks", "conversions"]].sum(axis=1) > 0,
-        )
-    ]
-    .copy()
-    .reset_index(drop=True)
+# ---- general quantities of identifiers per license:
+# --------------------------------------------------
+license_size, license_performance = get_volume_license(df_input)
+# visulas:
+barplot_per_license(license_size, ylabel="Volume", sub_filename="volume")
+barplot_per_license(
+    license_performance.drop("identifier", axis=1),
+    ylabel="Volume of activity per identifier",
+    sub_filename="volume_per_identifier",
 )
 
-# make a df with identifier only linked to license, and which lead to opens, clicks or conversions
-sets = built_venn_sets(df, list_licenses)
+# Distribution of identifier's opens, clicks, conversion for each license
+# -----------------------------------------------------------------------
+hist_activity_per_licence(df_input, activity_list, list_licenses, n_license)
+
+# --- Overlap of the licenses
+# ---------------------------
+(sets, cross_percent_df, added_percent_df) = build_overlapping_set_matrix(
+    df_input, list_licenses, only_active_identifier=True
+)
 plot_overlapping_sets(sets)
-
 plot_venn_matrix(sets, list_licenses, n_license)
-# correlation matrix
-# Find element overlap, remove same tag matches
-res = df.merge(df, on="identifier").query("license_x != license_y")
-cross_df = pd.crosstab(res.license_x, res.license_y)
-license_n_identifier = df.groupby("license")["identifier"].count()
-cross_percent_df = 100 * cross_df / license_n_identifier
-
-plot_cross_matrix(cross_percent_df, sub_filename="percent_overlap")
-
-added_percent_df = 100 * (license_n_identifier - cross_df) / license_n_identifier
-plot_cross_matrix(added_percent_df, sub_filename="percent_added")
-
-# list_licenses.remove("Netwise").remove("Netwise")
-# dic_added_partner = {}
-# for i_lic in range(len(list_licenses)):
-#     lic = list_licenses[i_lic]
-#     for i_lic2 in range(i_lic + 1, len(list_licenses)):
-#         lic2 = list_licenses[i_lic2]
-#         dic_added_partner[lic + " - " + lic2] = (
-#             added_percent_df[lic].loc[lic2] + added_percent_df[lic2].loc[lic]
-#         )
+plot_cross_matrix(cross_percent_df, sub_filename="percent_overlap", show_percent=True)
+plot_cross_matrix(added_percent_df, sub_filename="percent_added", show_percent=True)
 
 
-list_suggestion = ["Audience Accuity", "TowerData", "Netwise"]
-plot_venn3(sets, list_suggestion)
+# Some suggestions should be supported by venn3 diagram to show the final overlap
+# -------------------------------------------------------------------------------
+# Compare against both the full dataset, and only the active identifiers
+# - get a dataframe with information for different suggestions:
+dict_ref = {
+    "All Id": df_input,
+    "Active Id": df_input[df_input[activity_list].sum(axis=1) > 0],
+}
+suggestion_lists = [
+    ["LiveRamp"],
+    ["Audience Accuity"],
+    ["Audience Accuity", "TowerData"],
+    ["Audience Accuity", "TowerData", "Netwise"],
+    ["Audience Accuity", "FullContact"],
+    ["Audience Accuity", "FullContact", "Netwise"],
+    ["Audience Accuity", "FullContact", "TowerData"],
+    ["Audience Accuity", "FullContact", "TowerData", "Netwise"],
+    ["Audience Accuity", "LiveRamp", "Netwise"],
+]
+# prepare the dataframe
+coverage_columns = ["Coverage vs " + key for key in dict_ref.keys()]
+
+df_coverage = build_coverage_sumary(
+    dict_ref, suggestion_lists, coverage_columns, activity_list
+)
+plot_cross_matrix(
+    df_coverage[coverage_columns], sub_filename="percent_coverage", show_percent=True,
+)
+plot_cross_matrix(
+    df_coverage[["Volume clicks"]], sub_filename="volume_clicks", show_percent=False,
+)
 
 
-# -- suggestion:
-# Netwise is small but little overlap with the other -- take this one
-# Kochava is not worth as most are overlap with othe license
-# AudienceAccuity has a 84% and 81% overlap with FullContact and LiveRamp
-# - but only 22% TowerData
-
-
-# -- create a venn grpah with some combination to investigate further..
-# Netwise is small but doesnt seem to have a lot of overlap with the other licenses
-# -- could we get the number behind the overlap ? otherwise should compute to get them with group by
-# could make a table groupby by identifiers and list of licenses attached to them
-
-# final suggestion should be supported by a 2 - 3 venn diagram to show the final overlap
+for sugg in suggestion_lists:
+    if len(sugg) == 3:
+        plot_venn3(
+            sets, list_suggestion=sugg, add_circle=False, sub_filename="_".join(sugg),
+        )
+    elif len(sugg) > 3:
+        sets2 = {keys: sets[keys] for keys in sugg}
+        plot_overlapping_sets(sets2, sub_filename="_".join(sets.keys()))

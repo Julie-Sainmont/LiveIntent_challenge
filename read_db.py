@@ -36,41 +36,55 @@ The two tables can be joined using the "identifier column"
 
 
 """
-
+import numpy as np
 import pandas as pd
 import sqlite3
 from parameters import db_filename, dict_provider_name
 
 
-def fetch_data():
+def explore_db(conn_sql):
+    # creating cursor
+    cursor = conn_sql.cursor()
+
+    # reading all table names
+    table_list = [
+        cur
+        for cur in cursor.execute("SELECT name FROM sqlite_master WHERE type = 'table'")
+    ]
+    tablename_list = [tab[0] for tab in table_list]
+    # here is you table list
+    print("list of table in the db file: ", tablename_list)
+    for tablename in tablename_list:
+        print(
+            tablename,
+            pd.read_sql_query(f"SELECT * FROM {tablename} LIMIT 10", conn_sql),
+            "\n",
+        )
+    return
+
+
+def fetch_data(print_db_header=False):
     # Create a SQL connection to our SQLite database
     try:
         conn_sql = sqlite3.connect(db_filename)
     except Exception as e:
         print(e)
-    # # creating cursor
-    # cursor = conn_sql.cursor()
-
-    # # reading all table names
-    # table_list = [
-    #     cur for cur in cursor.execute("SELECT name FROM sqlite_master WHERE type = 'table'")
-    # ]
-    # # here is you table list
-    # print(table_list)
-    identifier_info = pd.read_sql_query("SELECT * FROM identifier_info", conn_sql)
-
+    if print_db_header:
+        explore_db(conn_sql)
+    # we make an inner join as we are not interested in the identifier not connected to a license (cannot be used)
     sql = """
-    SELECT pd.license, ii.identifier, ii.opens, ii.clicks, ii.conversions
+    SELECT COALESCE(pd.license, '_') as license, ii.identifier, ii.opens, ii.clicks, ii.conversions
     FROM identifier_info ii
-    LEFT JOIN license_info pd
-    on ii.identifier = pd.identifier
+      LEFT JOIN license_info pd
+        ON ii.identifier = pd.identifier
     """
     df = pd.read_sql_query(sql, conn_sql)  # Check if we need another type of Join!
 
     df = df.replace({"license": dict_provider_name})
     print("df", len(df))
     df_out = df.groupby(["license", "identifier"], as_index=False).sum()
+    df_out = df_out.replace("_", np.nan)
     print("df_out", len(df_out))
     # Close the connection to the DB
     conn_sql.close()
-    return df_out, identifier_info
+    return df_out
