@@ -55,7 +55,7 @@ def plot_n_licences_per_identifier(df):
 
 
 def plot_overlapping_sets(sets, sub_filename=""):
-    # -- look at them all together
+    # -- look at all licenses together
     # ----------------------------
     fig, ax = plt.subplots(1, figsize=(16, 12))
     venn(sets, ax=ax)
@@ -228,32 +228,6 @@ def plot_venn3(sets, list_suggestion=[], add_circle=False, sub_filename=""):
 
 def hist_activity_per_licence(df, activity_list, list_licenses, n_license):
     txt_size = 20
-    # n_act = len(activity_list)
-    # fig, axs = plt.subplots(
-    #     n_license, n_act, tight_layout=True,  sharey=True, figsize=(16, 20)
-    # )
-    # lic_i = -1
-    # for lic in list_licenses:
-    #     act_i = -1
-    #     lic_i += 1
-    #     df_lic = df[df["license"] == lic]
-    #     for act in activity_list:
-    #         act_i += 1
-    #         if act == "conversions":
-    #             set_log_ax = False
-    #         else:
-    #             set_log_ax = True
-    #         ax = df_lic[act].plot.hist(
-    #             logx=set_log_ax, logy=True, bins=50, ax=axs[lic_i, act_i]
-    #         )
-    #         if act_i == 0:
-    #             ax.set_ylabel(lic, fontsize=20)
-    #         else:
-    #             ax.set_ylabel("")
-    #         if lic_i == 0:
-    #             ax.set_title(act, fontsize=20)
-
-    # Make 3 fig - 1 per activity:
     for act in activity_list:
         fig, axs = plt.subplots(
             n_license, 1, tight_layout=True, sharey=True, sharex=True, figsize=(7, 20)

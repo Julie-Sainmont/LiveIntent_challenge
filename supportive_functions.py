@@ -23,8 +23,8 @@ def print_coverage_identifiers(df, list_suggestion):
     return
 
 
-# ---- general quantities of identifiers per license:
 def get_volume_license(df):
+    # ---- general quantities of identifiers per license:
     license_size = df.groupby("license").agg(
         {"identifier": "count", "opens": "sum", "clicks": "sum", "conversions": "sum"}
     )

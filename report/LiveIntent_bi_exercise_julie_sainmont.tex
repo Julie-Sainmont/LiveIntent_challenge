@@ -62,7 +62,7 @@
 \maketitle
 
 \section{Purpose}
-LiveIntent is currently purchasing a license from LiveRamp to use their set of identifiers to provide services to other partners. However LiveIntent is considering whether it should replace that partnership with one of more other partners. The suggested new partners are Audience Accuity and TowerData. This report investigate if the suggested change is supported by the data, and will indeed provide LiveIntent with a better coverage of identifiers at its disposal. \\
+LiveIntent is currently purchasing a license from LiveRamp to use their set of identifiers to provide services to other partners. However LiveIntent is considering whether it should replace that partnership with one of more other partners. The suggested new partners are Audience Accuity and TowerData. This report investigates if the suggested change is supported by the data, and if it would actually provide LiveIntent with a better coverage of identifiers at its disposal. \\
 
 % section -Assessment
 \section{Assessment of the identifier's coverage and the volume and performance of the licenses}
@@ -84,20 +84,20 @@ LiveIntent is currently purchasing a license from LiveRamp to use their set of i
   \label{fig:volume_per_id_per_license}
 \end{figure}
 
-From the provided dataset, we can see that about nearly 50\% of the dataset is not covered by any licenses, 24\% is covered only by one license, and a bit more than 26\% is covered by 2 or more licenses (figure \ref{fig:nr_licences_per_identifier}).\\
+From the provided dataset, we can see that nearly 50\% of the dataset is not covered by any licenses, 24\% is covered only by one license, and a bit more than 26\% is covered by 2 or more licenses (figure \ref{fig:nr_licences_per_identifier}).\\
 
-When focusing on the different licenses, we can see that LiveRamp has the highest coverage of identifiers (close to 12000, figure \ref{fig:volume_per_license}), however the identifiers covered by Audience Accuity show more activities in numbers of opens, clicks and conversions suggesting that even though Audience Accuity is a bit smaller it could perform better. This is confirmed when looking at the ratio between the identifier's activity versus their volume (figure \ref{fig:volume_per_id_per_license}) where LiveRamp has one of the poorest performance. Kochava and Audience Accuity are leading the group followed closely by TowerData.\\
+When focusing on the different licenses, we can see that LiveRamp has the highest coverage of identifiers (close to 12000, figure \ref{fig:volume_per_license}), however the identifiers covered by Audience Accuity show more activities in numbers of opens, clicks and conversions suggesting that even though Audience Accuity is a bit smaller it could perform better. This is confirmed when looking at the ratio between the identifier's activities versus their volume (figure \ref{fig:volume_per_id_per_license}) where LiveRamp has one of the poorest performances. Kochava and Audience Accuity are leading the group followed closely by TowerData.\\
 
-FullContact has a fairly close volume of identifier coverage than Audience Accuity but show only about half the quantity of activities (figure \ref{fig:volume_per_license} and \ref{fig:volume_per_id_per_license}). Netwise is from far the smallest of all licenses investigated.\\
+FullContact has a fairly close volume of identifier coverage compared to Audience Accuity but shows only about half the quantity of activities (figure \ref{fig:volume_per_license} and \ref{fig:volume_per_id_per_license}). Netwise is by far the smallest of all licenses investigated.\\
 
 
-Audience Accuity seems to be a good choice of licenses. it could be interesting to combine it with one of two other licenses to compensate the smaller volume of identifier covered. Given that identifiers can be covered by several licenses it is crucial to ensure the smallest overlap between the purchased license.\\
+Audience Accuity seems to be a good choice of license. It could be interesting to combine it with one of two other licenses to compensate the smaller volume of identifier covered. Given that identifiers can be covered by several licenses it is crucial to ensure the smallest overlap between the purchased licenses.\\
 
 % section -Overlap of the licenses
 \clearpage
 \newpage
 \section{Overlap of the licenses}
-The Kochava licenses has a large percentage of overlap with LiveRamp, Audience Accuity and FullContact (94\%, 97\% and 97\% respectively, figure \ref{fig:venn_matrix} and \ref{fig:heatmap_overlap}). Given that it is also the smallest of the 3 licenses, it is not worth considering further. Netwise, although very small, has very limited overlap with all the other licenses and could therefore be a good complement to the chosen license set (only 19\% of the identifiers are covered by Audience Accuity, and it is below 4\% and 1\% for TowerData and LiveRamp respectively).
+The Kochava license has a large percentage of overlap with LiveRamp, Audience Accuity and FullContact (94\%, 97\% and 97\% respectively, figure \ref{fig:venn_matrix} and \ref{fig:heatmap_overlap}). Given that it is also the smallest of the 3 licenses, it is not worth considering further. Netwise, although very small, has very limited overlap with all the other licenses and could therefore be a good complement to the chosen license set (only 19\% of the identifiers are covered by Audience Accuity, and it is below 4\% and 1\% for TowerData and LiveRamp respectively).
 \begin{figure}[h!]
   \includegraphics[width=1.1\linewidth]{../outputs/venn_matrix.png}
   \caption{Matrix of the overlap of identifier covered across the licenses.}
@@ -106,14 +106,14 @@ The Kochava licenses has a large percentage of overlap with LiveRamp, Audience A
 
 \begin{figure}[h!]
   \includegraphics[width=0.8\linewidth]{../outputs/heatmap_percent_overlap.png}
-  \caption{Overlapping percentage of the different identifiers covered by the licenses. The percentages relates to the volume of the license specified at the bottom of the column, i.e. the matrix should be read vertically.}
+  \caption{Overlapping percentage of the different identifiers covered by the licenses. The percentages relate to the volume of the license specified at the bottom of the column, i.e. the matrix should be read vertically.}
   \label{fig:heatmap_overlap}
 \end{figure}
 
-%section - Coverage of the licenses
+%section - Coverage of the license sets
 \clearpage
 \newpage
-\section{Coverage of the licenses}
+\section{Coverage of the license sets}
 \begin{figure}[h!]
   \includegraphics[width=0.7\linewidth]{../outputs/heatmap_percent_coverage.png}
   \caption{The percentage of coverage of the identifiers in the dataset considering all identifiers and only the ones that showed some activities for diverse combination of licenses sets.}
@@ -145,9 +145,11 @@ LiveRamp is covering 42.7\% of the identifiers of the dataset and 44.1\% of acti
   \label{fig:v3_AA_LR_N}
 \end{figure}
 
-With the suggested set, Audience Accuity and TowerData, the licenses will cover 26.0\% of the identifiers, but 41.1\% of the active identifiers closing in on the LiveRamp's active coverage. Providing that the Netwise license is at a reasonable price, it could be added to the set to increase the coverage without maybe double coverage. The overlap between the three is fairly limited (figure \ref{fig:v3_AA_TD_N})\\
+With the suggested set, Audience Accuity and TowerData, the licenses will cover 26.0\% of the identifiers, but 41.1\% of the active identifiers closing in on LiveRamp's active coverage. Providing that the Netwise license is at a reasonable price, it could be added to the set to increase the coverage without maybe double coverage (figure \ref{fig:v3_AA_TD_N}).\\
 
-Another combination could be Audience Accuity, FullContact (with or without Netwise) which would bring more coverage, more clicks, however the overlap is fairly large (figure \ref{fig:heatmap_percent_coverage}, \ref{fig:heatmap_vol_clicks} and \ref{fig:v3_AA_FC_N}).\\
+Another combination could be Audience Accuity, FullContact (with or without Netwise) which would bring more coverage and more clicks, however the overlap is fairly large (figure \ref{fig:heatmap_percent_coverage}, \ref{fig:heatmap_vol_clicks} and \ref{fig:v3_AA_FC_N}).\\
 
-If the largest coverage is the most important, then a combination with Audience Accuity, LiveRamp and Netwise could bring a coverage over 50\% of the active identifiers but at the cost a very double coverage (figure \ref{fig:heatmap_percent_coverage}  and \ref{fig:v3_AA_LR_N}), and the increase number of clicks are marginal compared to other sets (figure \ref{fig:heatmap_vol_clicks}).
+If the largest coverage is the most important, then a combination of Audience Accuity, LiveRamp and Netwise could bring a coverage over 50\% of the active identifiers but at the cost of high coverage overlap (figure \ref{fig:heatmap_percent_coverage}  and \ref{fig:v3_AA_LR_N}), and the increase in number of clicks are marginal compared to other sets (figure \ref{fig:heatmap_vol_clicks}).\\
+
+Pricing of the sets would be an important factor to determine the final choice. 
 \end{document}

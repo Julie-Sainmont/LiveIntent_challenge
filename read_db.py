@@ -71,7 +71,6 @@ def fetch_data(print_db_header=False):
         print(e)
     if print_db_header:
         explore_db(conn_sql)
-    # we make an inner join as we are not interested in the identifier not connected to a license (cannot be used)
     sql = """
     SELECT COALESCE(pd.license, '_') as license, ii.identifier, ii.opens, ii.clicks, ii.conversions
     FROM identifier_info ii

@@ -4,13 +4,13 @@
 The python code is present in the main folder.  
 
 Subfolders:
- - inputs: contains the database file copied from LiveIntent repository
- - outputs: contains the outputs files from the code, it contains mainly the plots/visuls,  
+ - inputs: contains the database file copied from LiveIntent's repository
+ - outputs: contains the outputs files from the code, it contains mainly the plots/visuls,
  - report: contains the LaTeX code to produce the report.
 
 ## Python code
-The data extract, combinasion, analysis and creation of the visuals are run by compiling the main.py code.  
-The plots export is controled by the parameters save_graph parameter in the parameters.py file.
+The data extract, combination, analysis and creation of the visuals are run by compiling the main.py code.
+The plots export is controled by the save_graph parameter in the parameters.py file.
 
 
 ## Report
